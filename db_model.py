@@ -1,6 +1,6 @@
 from peewee import *
 
-database = PostgresqlDatabase(host='34.65.191.37', port='5432', database='alumoo', user='postgres', password='postgres')
+database = PostgresqlDatabase('alumoov2', **{'host': '34.65.191.37', 'user': 'postgres', 'password': 'postgres'})
 
 class UnknownField(object):
     def __init__(self, *_, **__): pass
@@ -94,6 +94,17 @@ class TaskEntityVolunteerEntity1(BaseModel):
             ((), True),
         )
         primary_key = CompositeKey('applicants_volunteer', 'applications_task')
+
+class TaskEntityVolunteerEntity2(BaseModel):
+    favorit_tasks_task = ForeignKeyField(column_name='FavoritTasksTaskId', field='task_id', model=Tasks)
+    followers_volunteer = ForeignKeyField(column_name='FollowersVolunteerId', field='volunteer_id', model=Volunteers)
+
+    class Meta:
+        table_name = 'TaskEntityVolunteerEntity2'
+        indexes = (
+            ((), True),
+        )
+        primary_key = CompositeKey('favorit_tasks_task', 'followers_volunteer')
 
 class EfMigrationsHistory(BaseModel):
     migration_id = CharField(column_name='MigrationId', primary_key=True)

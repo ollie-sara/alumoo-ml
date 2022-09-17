@@ -25,10 +25,10 @@ with open('schemafiller/objects') as f:
 with open('schemafiller/locations') as f:
     locations = [x.strip() + ", Switzerland" for x in f.readlines()]
 
-psdb = pw.PostgresqlDatabase(host='34.65.191.37', port='5432', database='alumoo', user='postgres', password='postgres')
-numtasks = 10000
-numusers = 1000
-numprojects = 100
+psdb = pw.PostgresqlDatabase(host='34.65.191.37', port='5432', database='alumoov2', user='postgres', password='postgres')
+numtasks = 100
+numusers = 50
+numprojects = 3
 skillgen = make_blobs(
     n_samples=numtasks+numusers, 
     n_features=10, 
@@ -80,7 +80,7 @@ for i in range(numprojects):
         title=title
     ))
     added = []
-    for o in range(50):
+    for o in range(numprojects*5):
         volunteer = volunteers[int(random()*len(volunteers))].volunteer_id
         while volunteer in added:
             volunteer = volunteers[int(random()*len(volunteers))].volunteer_id
@@ -114,6 +114,15 @@ for i in range(numtasks):
         title=title
     ))
     taskid = tasks[len(tasks)-1].task_id
+    added = []
+    for i in range(3):
+        volid = volunteers[int(random()*len(volunteers))].volunteer_id
+        while volid in added:
+            volid = volunteers[int(random()*len(volunteers))].volunteer_id
+        TaskEntityVolunteerEntity2.create(
+            favorit_tasks_task=taskid,
+            followers_volunteer=volid
+        )
     t2v[taskid] = []
     if status != 0:
         volid = volunteers[int(random()*len(volunteers))].volunteer_id
