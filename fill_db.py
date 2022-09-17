@@ -12,17 +12,17 @@ objects = []
 locations = []
 impression_content = ['good', 'great', 'terrible', 'amazing', 'wonderful', 'lovely', 'delightful', 'generous', 'uncomfortable']
 
-with open('suggestion-api/schemafiller/firstnames') as f:
+with open('schemafiller/firstnames') as f:
     firstnames = [x.strip() for x in f.readlines()]
-with open('suggestion-api/schemafiller/lastnames') as f:
+with open('schemafiller/lastnames') as f:
     lastnames = [x.strip() for x in f.readlines()]
-with open('suggestion-api/schemafiller/emails') as f:
+with open('schemafiller/emails') as f:
     emails = [x.strip() for x in f.readlines()]
-with open('suggestion-api/schemafiller/verbs') as f:
+with open('schemafiller/verbs') as f:
     verbs = [x.strip() for x in f.readlines()]
-with open('suggestion-api/schemafiller/objects') as f:
+with open('schemafiller/objects') as f:
     objects = [x.strip() for x in f.readlines()]
-with open('suggestion-api/schemafiller/locations') as f:
+with open('schemafiller/locations') as f:
     locations = [x.strip() + ", Switzerland" for x in f.readlines()]
 
 psdb = pw.PostgresqlDatabase(host='34.65.191.37', port='5432', database='alumoo', user='postgres', password='postgres')
@@ -53,7 +53,7 @@ for i in range(numusers):
         first_name=firstname,
         last_name=lastname,
         email=f'{firstname}.{lastname}@{emails[int(random()*len(emails))]}',
-        img_url=f'/suggestion-api/schemafiller/avatars/avi{avinum}.png'
+        img_url=f'https://github.com/ollie-sara/alumoo-ml/blob/main/schemafiller/avatars/avi{avinum}.png?raw=true'
     ))
     userid = users[len(users)-1].user_id
     skills = genskill(i)
@@ -75,7 +75,7 @@ for i in range(numprojects):
     owner_user = users[int(random() * len(users))].user_id
     projects.append(Projects.create(
         description=description,
-        img_url=f'/suggestion-api/schemafiller/projectimgs/proj{img_url}.jpg',
+        img_url=f'https://github.com/ollie-sara/alumoo-ml/blob/main/schemafiller/projectimgs/proj{img_url}.jpg?raw=true',
         owner_user=owner_user,
         title=title
     ))
