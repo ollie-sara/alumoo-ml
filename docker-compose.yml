@@ -1,0 +1,36 @@
+version: '3.9'
+services:
+    alumoo-database:
+        image: postgres:alpine
+        restart: always
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+            - POSTGRES_DB=alumoo
+        ports:
+            - 5432:5432
+        volumes:
+            - db:/var/lib/postgresql/data
+    alumoo-pgadmin:
+        image: dpage/pgadmin4
+        ports:
+            - 5555:80
+        environment:
+            PGADMIN_DEFAULT_EMAIL: admin@admin.com
+            PGADMIN_DEFAULT_PASSWORD: admin
+        restart: always
+    alumoo-backend-api:
+        restart: always
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ConnectionStrings__DefaultConnection=Host=alumoo-database; Port=5432; Database=alumoo; Username=postgres; Password=postgres
+        ports:
+            - 5500:80
+        build: 
+            context: ../rest-api/src
+            dockerfile: alumoo.Backend.Api/Dockerfile
+        depends_on:
+            - alumoo-database
+volumes:
+    db:
+        driver: local
